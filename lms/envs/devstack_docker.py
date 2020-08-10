@@ -70,9 +70,9 @@ MKTG_URLS = {
     'TOS': '/edx-terms-service',
     'TOS_AND_HONOR': '/edx-terms-service',
     'WHAT_IS_VERIFIED_CERT': '/verified-certificate',
-    "NAV_MENU": "wp-json/edly-wp-routes/nav-menu",
-    "FOOTER": "wp-json/edly-wp-routes/footer",
-    "ZENDESK-WIDGET": "wp-json/edly-wp-routes/edly-zendesk-widget"
+    "NAV_MENU": "/wp-json/edly-wp-routes/nav-menu",
+    "FOOTER": "/wp-json/edly-wp-routes/footer",
+    "ZENDESK-WIDGET": "/wp-json/edly-wp-routes/edly-zendesk-widget"
 }
 
 CREDENTIALS_SERVICE_USERNAME = 'credentials_worker'
