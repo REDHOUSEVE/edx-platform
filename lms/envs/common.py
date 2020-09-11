@@ -2341,6 +2341,8 @@ INSTALLED_APPS = [
     'openedx.features.edly',
     'edly_panel_app',
     'openedx.features.redhouse_features',
+    'openedx.features.redhouse_features.admin_panel',
+    'openedx.features.redhouse_features.admin_panel.api',
     'openedx.features.redhouse_features.registration',
 ]
 
