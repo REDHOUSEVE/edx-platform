@@ -23,10 +23,10 @@ var defineCallFooter = /\}\)\.call\(this, ((define|require)( \|\| RequireJS\.(de
 var defineDirectFooter = /\}\(((window\.)?(RequireJS\.)?(requirejs|define|require|jQuery)(, )?)+\)\);/;
 var defineFancyFooter = /\}\).call\(\s*this(\s|.)*define(\s|.)*\);/;
 var defineFooter = new RegExp('(' + defineCallFooter.source + ')|('
-                             + defineDirectFooter.source + ')|('
-                             + defineFancyFooter.source + ')', 'm');
+    + defineDirectFooter.source + ')|('
+    + defineFancyFooter.source + ')', 'm');
 
-var workerConfig = function() {
+var workerConfig = function () {
     try {
         return {
             webworker: {
@@ -55,7 +55,7 @@ var workerConfig = function() {
                     ]
                 },
                 resolve: {
-                    extensions: ['.js']
+                    extensions: ['.js', '.jsx']
                 }
             }
         }
@@ -112,13 +112,17 @@ module.exports = Merge.smart({
             LatestUpdate: './openedx/features/course_experience/static/course_experience/js/LatestUpdate.js',
             WelcomeMessage: './openedx/features/course_experience/static/course_experience/js/WelcomeMessage.js',
 
+            // Redhouse
+            RedhouseAdminDashboard: './openedx/features/admin_panel/static/js/RedhouseAdminDashboard.jsx',
+
             CookiePolicyBanner: './common/static/js/src/CookiePolicyBanner.jsx',
 
             // Common
             ReactRenderer: './common/static/js/src/ReactRenderer.jsx',
             XModuleShim: 'xmodule/js/src/xmodule.js',
             VerticalStudentView: './common/lib/xmodule/xmodule/assets/vertical/public/js/vertical_student_view.js',
-            commons: 'babel-polyfill'
+            commons: 'babel-polyfill',
+
         },
 
         output: {
@@ -184,27 +188,27 @@ module.exports = Merge.smart({
                             replacements: [
                                 {
                                     pattern: defineHeader,
-                                    replacement: function() { return ''; }
+                                    replacement: function () { return ''; }
                                 },
                                 {
                                     pattern: defineFooter,
-                                    replacement: function() { return ''; }
+                                    replacement: function () { return ''; }
                                 },
                                 {
                                     pattern: /(\/\* RequireJS) \*\//g,
-                                    replacement: function(match, p1) { return p1; }
+                                    replacement: function (match, p1) { return p1; }
                                 },
                                 {
                                     pattern: /\/\* Webpack/g,
-                                    replacement: function(match) { return match + ' */'; }
+                                    replacement: function (match) { return match + ' */'; }
                                 },
                                 {
                                     pattern: /text!(.*?\.underscore)/g,
-                                    replacement: function(match, p1) { return p1; }
+                                    replacement: function (match, p1) { return p1; }
                                 },
                                 {
                                     pattern: /RequireJS.require/g,
-                                    replacement: function() {
+                                    replacement: function () {
                                         return 'require';
                                     }
                                 }
@@ -255,31 +259,31 @@ module.exports = Merge.smart({
                             replacements: [
                                 {
                                     pattern: /\(function\(AjaxPrefix\) {/,
-                                    replacement: function() { return ''; }
+                                    replacement: function () { return ''; }
                                 },
                                 {
                                     pattern: /], function\(domReady, \$, str, Backbone, gettext, NotificationView\) {/,
-                                    replacement: function() {
+                                    replacement: function () {
                                         // eslint-disable-next-line
                                         return '], function(domReady, $, str, Backbone, gettext, NotificationView, AjaxPrefix) {';
                                     }
                                 },
                                 {
                                     pattern: /'..\/..\/common\/js\/components\/views\/feedback_notification',/,
-                                    replacement: function() {
+                                    replacement: function () {
                                         return "'../../common/js/components/views/feedback_notification'," +
-                                               "'AjaxPrefix',";
+                                            "'AjaxPrefix',";
                                     }
                                 },
                                 {
                                     pattern: /}\).call\(this, AjaxPrefix\);/,
-                                    replacement: function() { return ''; }
+                                    replacement: function () { return ''; }
                                 },
                                 {
                                     pattern: /'..\/..\/common\/js\/components\/views\/feedback_notification',/,
-                                    replacement: function() {
+                                    replacement: function () {
                                         return "'../../common/js/components/views/feedback_notification'," +
-                                               "'AjaxPrefix',";
+                                            "'AjaxPrefix',";
                                     }
                                 }
                             ]
@@ -297,7 +301,7 @@ module.exports = Merge.smart({
                 {
                     test: /xblock\/core/,
                     loader: 'exports-loader?window.XBlock!' +
-                            'imports-loader?jquery,jquery.immediateDescendents,this=>window'
+                        'imports-loader?jquery,jquery.immediateDescendents,this=>window'
                 },
                 {
                     test: /xblock\/runtime.v1/,
@@ -426,4 +430,4 @@ module.exports = Merge.smart({
         }
 
     }
-}, {web: xmoduleJS}, workerConfig());
+}, { web: xmoduleJS }, workerConfig());
