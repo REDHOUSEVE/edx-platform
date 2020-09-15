@@ -376,6 +376,10 @@ define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui'
                   let cachedThis = this;
 
                    TinyMCE.init({
+                     // After being bundled TinyMCE does not work
+                     // Therefore using path from django static files
+                     base_url: window.baseUrl + 'js/vendor/tinymce_5.4.2/js/tinymce',
+
                      selector: target_selector,
                      plugins: 'print preview paste importcss searchreplace autolink directionality code visualblocks \
                        visualchars fullscreen image link media template codesample table charmap hr pagebreak \
