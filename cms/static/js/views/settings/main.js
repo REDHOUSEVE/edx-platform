@@ -85,8 +85,7 @@ define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui'
                    DateUtils.setupDatePicker('enrollment_end', this);
 
                    this.$el.find('#' + this.fieldToSelectorMap.overview).val(this.model.get('overview'));
-                   this.renderTinyMCE('#' + this.fieldToSelectorMap.overview)
-                   // this.codeMirrorize(null, $('#course-overview')[0]);
+                   this.renderTinyMCE('#' + this.fieldToSelectorMap.overview);
 
                    if (this.model.get('title') !== '') {
                        this.$el.find('#' + this.fieldToSelectorMap.title).val(this.model.get('title'));
