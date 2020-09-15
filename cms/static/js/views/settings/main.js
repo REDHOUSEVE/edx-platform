@@ -374,7 +374,7 @@ define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui'
                    }
                },
                renderTinyMCE: function(target_selector) {
-                  let cachedThis = this
+                  let cachedThis = this;
 
                    TinyMCE.init({
                      selector: target_selector,
