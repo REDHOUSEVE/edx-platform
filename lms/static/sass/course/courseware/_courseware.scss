@@ -15,6 +15,11 @@ html.video-fullscreen {
   }
 }
 
+.view-in-course.view-courseware.courseware {
+    height: 100%;
+    overflow: auto;
+}
+
 .wrap-instructor-info {
   @extend %ui-print-excluded;
 
