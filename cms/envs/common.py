@@ -1416,6 +1416,54 @@ ADVANCED_PROBLEM_TYPES = [
     {
         'component': 'drag-and-drop-v2',
         'boilerplate_name': None
+    },
+    {
+        'component': 'done',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'google-document',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'google-calendar',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'lti_consumer',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'poll',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'survey',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'vectordraw',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'freetextresponse',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'edx_sga',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'pdf',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'problem-builder',
+        'boilerplate_name': None
+    },
+    {
+        'component': 'video_xblock',
+        'boilerplate_name': None
     }
 ]
 
@@ -1617,6 +1665,7 @@ COMPLETION_VIDEO_COMPLETE_PERCENTAGE = 0.95
 
 from openedx.core.djangoapps.plugins import plugin_apps, plugin_settings, constants as plugin_constants
 INSTALLED_APPS.extend(plugin_apps.get_apps(plugin_constants.ProjectType.CMS))
+INSTALLED_APPS += ['freetextresponse']
 plugin_settings.add_plugins(__name__, plugin_constants.ProjectType.CMS, plugin_constants.SettingsType.COMMON)
 
 # Course exports streamed in blocks of this size. 8192 or 8kb is the default
