@@ -1303,6 +1303,9 @@ MIDDLEWARE_CLASSES = [
     'django_comment_client.utils.ViewNameMiddleware',
     'codejail.django_integration.ConfigureCodeJailMiddleware',
 
+    # middleware to block certain url names
+    'openedx.features.redhouse_features.middleware.BlockingUrlMiddleware',
+
     # catches any uncaught RateLimitExceptions and returns a 403 instead of a 500
     'ratelimitbackend.middleware.RateLimitMiddleware',
 
