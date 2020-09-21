@@ -18,6 +18,19 @@ class SiteView(APIView):
     permission_classes = (IsAuthenticated, IsStaffOrOwner,)
 
     def get(self, request, pk):
+        """
+        Return `Site` in the form of an object.
+
+        Raises:
+            NotFound: Raised if site with `pk` provided in `URL` does not exist.
+
+        Example:
+            `GET: /admin-panel/api/v0/site/1/`
+            {
+                "name": "Example Name",
+                "address": "Silicon Valley"
+            }
+        """
         site = get_object_or_404(Site, pk=pk)
         site_configuration = SiteConfiguration.objects.filter(site=site).first() 
         data = {
