@@ -113,7 +113,7 @@ module.exports = Merge.smart({
             WelcomeMessage: './openedx/features/course_experience/static/course_experience/js/WelcomeMessage.js',
 
             // Redhouse
-            RedhouseAdminDashboard: './openedx/features/redhouse_features/admin_panel/static/js/RedhouseAdminDashboard.jsx',
+            RedhouseAdminDashboard: './openedx/features/admin_panel/static/js/RedhouseAdminDashboard.jsx',
 
             CookiePolicyBanner: './common/static/js/src/CookiePolicyBanner.jsx',
 
