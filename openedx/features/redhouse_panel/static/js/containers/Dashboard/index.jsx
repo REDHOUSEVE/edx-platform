@@ -17,7 +17,7 @@ import AdvancedSettings from './AdvancedSettings';
 export default function Dashboard(props) {
     return (
         <Container fluid>
-            <div className='admin-dashboard'>
+            <div className='panel-dashboard'>
                 <StatsBar />
                 <div>
                     <Row className='ml-0'>
