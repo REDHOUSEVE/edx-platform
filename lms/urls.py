@@ -1049,7 +1049,8 @@ if settings.FEATURES.get('ENABLE_API_DOCS'):
 # edx-drf-extensions csrf app
 urlpatterns += [
     url(r'', include('csrf.urls')),
-    url(r'', include('openedx.features.redhouse_features.urls'))
+    url(r'', include('openedx.features.redhouse_features.urls')),
+    url(r'^redhouse-panel/', include('openedx.features.redhouse_panel.urls'))
 ]
 
 urlpatterns.extend(plugin_urls.get_patterns(plugin_constants.ProjectType.LMS))
