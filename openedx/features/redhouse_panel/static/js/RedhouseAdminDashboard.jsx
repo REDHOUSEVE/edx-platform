@@ -9,6 +9,7 @@ import {
 
 import PanelNavbar from './containers/Navbar';
 import Dashboard from './containers/Dashboard';
+import PeoplePage from './containers/PeoplePage';
 
 
 export default function AdminPanel({ context }) {
@@ -17,9 +18,7 @@ export default function AdminPanel({ context }) {
             <PanelNavbar />
             <Switch>
                 <Route exact path='/' component={Dashboard} />
-                <Route path='/people' >
-                    <div>People Page</div>
-                </Route>
+                <Route exact path='/people' component={PeoplePage} />
                 <Route path='/settings' >
                     <div>Settings Page</div>
                 </Route>
