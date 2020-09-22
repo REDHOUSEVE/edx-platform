@@ -1,5 +1,5 @@
 """
-URLs for the Admin panel v0 APIs.
+URLs for the Redhouse Panel v0 APIs.
 """
 
 app_name = 'redhouse_panel_api.v0'
