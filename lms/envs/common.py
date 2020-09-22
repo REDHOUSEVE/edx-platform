@@ -2345,6 +2345,8 @@ INSTALLED_APPS = [
     'edly_panel_app',
     'openedx.features.redhouse_features',
     'openedx.features.redhouse_features.registration',
+    'openedx.features.redhouse_panel',
+    'openedx.features.redhouse_panel.api',
 ]
 
 ######################### CSRF #########################################
