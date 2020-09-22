@@ -51,7 +51,7 @@ class UsersAccountStatsAPIViewTest(TestCase):
         )
 
         url = reverse(
-            'redhouse_features:redhouse_panel:redhouse_panel_api.v0:users_account_stats',
+            'redhouse_panel:redhouse_panel_api.v0:users_account_stats',
             kwargs={'pk': self.staff.edly_profile.edly_sub_organizations.first().lms_site.id}
         )
 
@@ -70,7 +70,7 @@ class UsersAccountStatsAPIViewTest(TestCase):
         )
 
         url = reverse(
-            'redhouse_features:redhouse_panel:redhouse_panel_api.v0:users_account_stats',
+            'redhouse_panel:redhouse_panel_api.v0:users_account_stats',
             kwargs={'pk': self.student.edly_profile.edly_sub_organizations.first().lms_site.id}
         )
 
