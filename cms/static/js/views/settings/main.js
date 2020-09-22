@@ -1,10 +1,10 @@
 define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui', 'js/utils/date_utils',
     'js/models/uploads', 'js/views/uploads', 'js/views/license', 'js/models/license',
     'common/js/components/views/feedback_notification', 'jquery.timepicker', 'date', 'gettext',
-    'js/views/learning_info', 'js/views/instructor_info', 'edx-ui-toolkit/js/utils/string-utils'],
+    'js/views/learning_info', 'js/views/instructor_info', 'edx-ui-toolkit/js/utils/string-utils', 'tinymce_v5'],
        function(ValidatingView, CodeMirror, _, $, ui, DateUtils, FileUploadModel,
                 FileUploadDialog, LicenseView, LicenseModel, NotificationView,
-                timepicker, date, gettext, LearningInfoView, InstructorInfoView, StringUtils) {
+                timepicker, date, gettext, LearningInfoView, InstructorInfoView, StringUtils, TinyMCE) {
            var DetailsView = ValidatingView.extend({
     // Model class is CMS.Models.Settings.CourseDetails
                events: {
@@ -85,7 +85,7 @@ define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui'
                    DateUtils.setupDatePicker('enrollment_end', this);
 
                    this.$el.find('#' + this.fieldToSelectorMap.overview).val(this.model.get('overview'));
-                   this.codeMirrorize(null, $('#course-overview')[0]);
+                   this.renderTinyMCE('#' + this.fieldToSelectorMap.overview);
 
                    if (this.model.get('title') !== '') {
                        this.$el.find('#' + this.fieldToSelectorMap.title).val(this.model.get('title'));
@@ -372,6 +372,38 @@ define(['js/views/validation', 'codemirror', 'underscore', 'jquery', 'jquery.ui'
                        cmTextArea.setAttribute('id', thisTarget.id + '-cm-textarea');
                    }
                },
+               renderTinyMCE: function(target_selector) {
+                  let cachedThis = this;
+
+                   TinyMCE.init({
+                     selector: target_selector,
+                     plugins: 'print preview paste importcss searchreplace autolink directionality code visualblocks \
+                       visualchars fullscreen image link media template codesample table charmap hr pagebreak \
+                       nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable \
+                       help charmap quickbars emoticons',
+                     menubar: 'file edit view insert format tools table help',
+                     toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect \
+                       | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | \
+                       forecolor backcolor removeformat | pagebreak | charmap emoticons | \
+                       fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                     toolbar_sticky: true,
+                     image_advtab: true,
+                     image_caption: true,
+                     quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                     noneditable_noneditable_class: 'mceNonEditable',
+                     toolbar_mode: 'sliding',
+                     contextmenu: 'link image imagetools table',
+
+                     setup: function(editor) {
+                       editor.on('Change', function(e) {
+                         let newVal = e.target.getContent()
+                         let field = cachedThis.selectorToField[$(target_selector).attr('id')];
+                         if (cachedThis.model.get(field) !== newVal) {
+                          cachedThis.setAndValidate(field, newVal);}
+                         });
+                     }
+                   })
+                },
 
                revertView: function() {
         // Make sure that the CodeMirror instance has the correct
