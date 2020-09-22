@@ -72,8 +72,6 @@ class UsersAccountStatsAPIView(APIView):
             'student_count'
         )
 
-        # import pdb; pdb.set_trace()
-
         stats = {}
         for stat in _stats or [self.default_stats]:
             for key, value in stat.items():
