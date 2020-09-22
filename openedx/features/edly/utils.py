@@ -219,6 +219,9 @@ def user_belongs_to_edly_organization(request, user):
         bool: Returns True if User belongs to Edly Organization Otherwise False.
     """
 
+    if not hasattr(user, 'edly_profile'):
+        return False
+
     current_site = request.site
     try:
         edly_sub_org = EdlySubOrganization.objects.get(

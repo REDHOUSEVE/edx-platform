@@ -1454,7 +1454,7 @@ ADVANCED_PROBLEM_TYPES = [
         'boilerplate_name': None
     },
     {
-        'component': 'xblock-pdf',
+        'component': 'pdf',
         'boilerplate_name': None
     },
     {

@@ -120,6 +120,7 @@
             'backbone.paginator': 'common/js/vendor/backbone.paginator',
             'tinymce': 'js/vendor/tinymce/js/tinymce/tinymce.full.min',
             'jquery.tinymce': 'js/vendor/tinymce/js/tinymce/jquery.tinymce.min',
+            'tinymce_v5': 'https://cdn.jsdelivr.net/npm/tinymce@5.4.2/tinymce.min',
             'xmodule': '/xmodule/xmodule',
             'xblock/cms.runtime.v1': 'cms/js/xblock/cms.runtime.v1',
             'xblock': 'common/js/xblock',
@@ -238,6 +239,9 @@
                 deps: ['codemirror']
             },
             'tinymce': {
+                exports: 'tinymce'
+            },
+            'tinymce_v5': {
                 exports: 'tinymce'
             },
             'lang_edx': {
