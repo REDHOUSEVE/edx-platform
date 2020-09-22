@@ -10,7 +10,7 @@ from rest_framework_oauth.authentication import OAuth2Authentication
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 from openedx.core.lib.api.permissions import IsStaffOrOwner
 
-from .serializers import SiteSerializer
+from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer
 
 
 class SiteView(APIView):

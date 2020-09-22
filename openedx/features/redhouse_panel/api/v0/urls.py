@@ -3,7 +3,7 @@ URLs for the Admin panel v0 APIs.
 """
 from django.conf.urls import url
 
-from . import views
+from openedx.features.redhouse_panel.api.v0 import views
 
 app_name = 'redhouse_panel_api.v0'
 
