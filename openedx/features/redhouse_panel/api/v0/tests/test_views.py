@@ -30,7 +30,7 @@ class SiteViewTests(TestCase):
         site = SiteFactory(name=self.site_name)
         site_configuration = SiteConfigurationFactory(values={'address': self.site_address}, site=site)
 
-        url = reverse('redhouse_features:redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], self.site_name)
@@ -39,7 +39,7 @@ class SiteViewTests(TestCase):
     def test_for_unauthenticated_user_return_error(self):
         site = SiteFactory(name=self.site_name)
         site_configuration = SiteConfigurationFactory(values={'address': self.site_address}, site=site)
-        url = reverse('redhouse_features:redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
 
         self.client.logout()
 
@@ -48,7 +48,7 @@ class SiteViewTests(TestCase):
         self.assertEqual(response.data['detail'], 'Authentication credentials were not provided.')
 
     def test_non_existent_site_return_error(self):
-        url = reverse('redhouse_features:redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': 2})
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': 2})
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -57,7 +57,7 @@ class SiteViewTests(TestCase):
     def test_non_existent_site_configuration_return_empty_address(self):
         site = SiteFactory(name=self.site_name)
 
-        url = reverse('redhouse_features:redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -80,7 +80,7 @@ class SiteViewTests(TestCase):
                 settings.EDLY_USER_INFO_COOKIE_NAME: cookies._get_edly_user_info_cookie_string(request)
             }
         )
-        url = reverse('redhouse_features:redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
         response = self.client.get(url, SERVER_NAME=site.domain)
         
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
