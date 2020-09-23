@@ -2,15 +2,18 @@ from django.contrib.sites.models import Site
 from django.shortcuts import get_object_or_404
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_oauth.authentication import OAuth2Authentication
 
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 from openedx.core.lib.api.permissions import IsStaffOrOwner
+from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UpdateUserActiveStatusSerializer
+from django.contrib.auth import get_user_model
 
-from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer
+User = get_user_model()
 
 
 class SiteView(APIView):
@@ -30,9 +33,32 @@ class SiteView(APIView):
             }
         """
         site = get_object_or_404(Site, pk=pk)
-        site_configuration = SiteConfiguration.objects.filter(site=site).first() 
+        site_configuration = SiteConfiguration.objects.filter(site=site).first()
         data = {
             'name': site.name,
             'address': site_configuration.values.get('address') if site_configuration else '',
         }
         return Response(SiteSerializer(data).data)
+
+
+class UpdateUserActiveStatus(UpdateAPIView):
+    """
+    View to change user's active status
+    Raises:
+        NotFound: Raised if user with `pk` provided in `URL` does not exist.
+    Example:
+        `PUT/PATCH: /admin-panel/api/v0/users/1/update`
+        body: {"is_active": false}
+        :returns
+            {
+                "id": "1",
+                "is_active": false
+            }
+    """
+    queryset = User.objects.all()
+    serializer_class = UpdateUserActiveStatusSerializer
+    authentication_classes = (SessionAuthentication, JwtAuthentication, OAuth2Authentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
