@@ -60,7 +60,7 @@ class UsersAccountStatsAPIView(APIView):
             )
         )
 
-        _stats = get_user_model().objects.filter(
+        _stats = User.objects.filter(
             site_users_query
         ).annotate(
             is_instructor=is_instructor_query
