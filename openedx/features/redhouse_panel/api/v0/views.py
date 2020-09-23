@@ -15,10 +15,6 @@ from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 from openedx.core.djangoapps.theming.helpers import get_current_site
 from openedx.core.lib.api.permissions import IsStaffOrOwner
 from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UpdateUserActiveStatusSerializer
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer
 from student.models import CourseAccessRole
 from student.roles import CourseStaffRole, CourseInstructorRole
 
