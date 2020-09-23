@@ -1,14 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.db.models import F, Q, Count, Case, When, OuterRef, Exists, BooleanField
-from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
-from openedx.core.djangoapps.theming.helpers import get_current_site
-from openedx.core.lib.api.permissions import IsStaffOrOwner
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_oauth.authentication import OAuth2Authentication
+
+from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
+from openedx.core.djangoapps.theming.helpers import get_current_site
+from openedx.core.lib.api.permissions import IsStaffOrOwner
 from student.models import CourseAccessRole
 from student.roles import CourseStaffRole, CourseInstructorRole
 
