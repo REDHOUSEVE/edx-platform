@@ -42,7 +42,7 @@ class UsersAccountStatsAPIViewTest(TestCase):
         edly_user_profile = EdlyUserProfileFactory(user=self.student)
         edly_user_profile.edly_sub_organizations.add(*self.edly_sub_organizations)
 
-    def test_with_staff_user(self):
+    def test_with_global_staff_user(self):
         # is_staff = True
 
         self.client.login(
@@ -61,18 +61,12 @@ class UsersAccountStatsAPIViewTest(TestCase):
         self.assertEqual(response.data['instructor_count'], 1)
         self.assertEqual(response.data['student_count'], 1)
 
-    def test_with_non_staff_user(self):
-        # is_staff = False
-
-        self.client.login(
-            username=self.student.username,
-            password=self.PASSWORD
-        )
-
+    def test_for_unauthenticated_user_return_error(self):
         url = reverse(
             'redhouse_panel:redhouse_panel_api.v0:users_account_stats',
-            kwargs={'pk': self.student.edly_profile.edly_sub_organizations.first().lms_site.id}
+            kwargs={'pk': self.staff.edly_profile.edly_sub_organizations.first().lms_site.id}
         )
 
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.data['detail'], 'Authentication credentials were not provided.')
