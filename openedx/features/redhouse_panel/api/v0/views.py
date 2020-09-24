@@ -11,6 +11,7 @@ from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 from openedx.core.lib.api.permissions import IsStaffOrOwner
 
 from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer
+from xmodule.modulestore.django import modulestore
 
 
 class SiteView(APIView):
@@ -30,9 +31,29 @@ class SiteView(APIView):
             }
         """
         site = get_object_or_404(Site, pk=pk)
-        site_configuration = SiteConfiguration.objects.filter(site=site).first() 
+        site_configuration = SiteConfiguration.objects.filter(site=site).first()
         data = {
             'name': site.name,
             'address': site_configuration.values.get('address') if site_configuration else '',
         }
         return Response(SiteSerializer(data).data)
+
+
+class CourseView(APIView):
+    authentication_classes = (JwtAuthentication, OAuth2Authentication, SessionAuthentication,)
+    permission_classes = (IsAuthenticated, IsStaffOrOwner,)
+
+    def get(self, request):
+        """
+        Return `courses` in the form of list
+        Example:
+            `GET: /admin-panel/api/v0/courses/`
+            [
+                course1,
+                course2,
+                course3
+            ]
+        """
+        course_descriptors = modulestore().get_courses()
+        courses = [course.location.course for course in course_descriptors]
+        return Response(data=courses)

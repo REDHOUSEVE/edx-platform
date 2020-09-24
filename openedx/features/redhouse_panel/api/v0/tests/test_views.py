@@ -63,7 +63,7 @@ class SiteViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], site.name)
         self.assertEqual(response.data['address'], '')
-    
+
     def test_for_non_staff_user_return_error(self):
         password = 'fake.password'
         user = EdlyUserFactory(password=password)
@@ -82,6 +82,33 @@ class SiteViewTests(TestCase):
         )
         url = reverse('redhouse_panel:redhouse_panel_api.v0:site', kwargs={'pk': site.id})
         response = self.client.get(url, SERVER_NAME=site.domain)
-        
+
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data['detail'], 'You do not have permission to perform this action.')
+
+
+class CourseViewTests(TestCase):
+    USERNAME = "edx"
+    EMAIL = "edx@example.com"
+    PASSWORD = "edx"
+
+    def setUp(self):
+        self.staff = UserFactory.create(
+            username=self.USERNAME,
+            email=self.EMAIL,
+            password=self.PASSWORD,
+            is_staff=True
+        )
+        self.client.login(username=self.USERNAME, password=self.PASSWORD)
+
+    def test_return_courses_successfully(self):
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:all_courses')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_for_unauthenticated_user_return_error(self):
+        url = reverse('redhouse_panel:redhouse_panel_api.v0:all_courses')
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.data['detail'], 'Authentication credentials were not provided.')
