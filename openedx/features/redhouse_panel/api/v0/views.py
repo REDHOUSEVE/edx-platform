@@ -14,7 +14,7 @@ from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthenticat
 from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
 from openedx.core.djangoapps.theming.helpers import get_current_site
 from openedx.core.lib.api.permissions import IsStaffOrOwner
-from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UpdateUserActiveStatusSerializer
+from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UserSerializer
 from student.models import CourseAccessRole
 from student.roles import CourseStaffRole, CourseInstructorRole
 
@@ -134,7 +134,7 @@ class UpdateUserActiveStatus(UpdateAPIView):
             }
     """
     queryset = User.objects.all()
-    serializer_class = UpdateUserActiveStatusSerializer
+    serializer_class = UserSerializer
     authentication_classes = (SessionAuthentication, JwtAuthentication, OAuth2Authentication,)
     permission_classes = (IsAuthenticated, IsAdminUser)
 

@@ -9,11 +9,7 @@ class SiteSerializer(serializers.Serializer):
     address = serializers.CharField()
 
 
-class UpdateUserActiveStatusSerializer(serializers.ModelSerializer):
-    """
-    Serializer for active status change endpoint.
-    """
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'is_active')
+        fields = '__all__'
