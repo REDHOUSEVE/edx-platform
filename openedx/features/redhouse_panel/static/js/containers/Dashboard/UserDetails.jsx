@@ -17,9 +17,11 @@ export default function UserDetails(props) {
             <CardTitle>Lead Admin</CardTitle>
             <CardBody>
                 <Row>
-                    <Col md='4'><img style={{
-                        width: 'inherit'
-                    }} src='https://sms.northhills.edu.pk/uploads/website/officers/anonymous-user.png' /></Col>
+                    <Col md='4'>
+                        <img
+                            className='w-100 rounded-circle'
+                            src='https://sms.northhills.edu.pk/uploads/website/officers/anonymous-user.png' />
+                    </Col>
                     <Col md='auto'>
                         <Row>
                             <span className='lead'>Name:</span>

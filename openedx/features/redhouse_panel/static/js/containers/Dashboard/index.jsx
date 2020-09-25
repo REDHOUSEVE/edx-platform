@@ -10,7 +10,7 @@ import StatsBar from './StatsBar';
 import UserDetails from './UserDetails';
 import SchoolInfo from './SchoolInfo';
 import PermissionsManager from './PermissionsManager';
-import CourseLevels from './CourseLevels';
+import UsersListBox from './UsersListBox';
 import AdvancedSettings from './AdvancedSettings';
 
 
@@ -36,9 +36,29 @@ export default function Dashboard(props) {
                     </Row>
                     <Row className='ml-0'>
                         <Col className='info-box'>
-                            <CourseLevels />
+                            <UsersListBox title='Students' data={[
+                                { name: 'John Doe1' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                            ]} />
+                        </Col>
+                        <Col className='info-box'>
+                            <UsersListBox title='Teachers' data={[
+                                { name: 'John Doe1' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                                { name: 'John Doe' },
+                            ]} />
                         </Col>
 
+
+                    </Row>
+                    <Row className='ml-0'>
                         <Col className='info-box'>
                             <AdvancedSettings />
                         </Col>

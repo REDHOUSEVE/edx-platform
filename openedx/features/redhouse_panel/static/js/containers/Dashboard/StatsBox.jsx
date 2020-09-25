@@ -8,16 +8,19 @@ import {
 export default function StatsBox({ number, text }) {
     return (
         <div>
-            <Row style={{
-                justifyContent: 'center',
-                fontWeight: 'bolder',
-                fontSize: 'xx-large'
-            }}>{number}</Row>
-            <Row style={{
-                textAlign: 'center'
-            }}>
+            <Row
+                className={[
+                    'justify-content-center',
+                    'font-weight-bolder'
+                ]}
+            >
+                <span className='display-4'>
+                    {number}
+                </span>
+            </Row>
+            <Row className='text-center'>
                 <p className='text-muted'>{text}</p>
-                </Row>
+            </Row>
         </div>
     )
 }

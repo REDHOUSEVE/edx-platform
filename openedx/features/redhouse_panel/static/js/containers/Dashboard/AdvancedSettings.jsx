@@ -18,9 +18,7 @@ export default function AdvancedSettings(props) {
                     <CardText>
                         *Note: Only Lead Admin can see/change advanced settings.
                     </CardText>
-                    <div style={{
-                        textAlign: 'center'
-                    }}>
+                    <div className='w-100 text-center'>
                         <Button color='primary'>VIEW SETTINGS</Button>
                     </div>
                 </CardBody>
