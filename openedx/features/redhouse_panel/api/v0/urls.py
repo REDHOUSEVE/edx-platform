@@ -1,5 +1,5 @@
 """
-URLs for the Admin panel v0 APIs.
+URLs for the Redhouse Panel v0 APIs.
 """
 from django.conf.urls import url
 
