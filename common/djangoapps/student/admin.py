@@ -15,7 +15,7 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.waffle_utils import WaffleSwitch
 from openedx.core.lib.courses import clean_course_id
 from student import STUDENT_WAFFLE_NAMESPACE
-from student.helpers import is_access_limited_admin_user
+from student.helpers import is_limited_access_admin_user
 from student.models import (
     AccountRecovery,
     CourseAccessRole,
@@ -268,7 +268,7 @@ class UserProfileInline(admin.StackedInline):
     verbose_name_plural = _('User profile')
 
     def has_permission(self, request, method):
-        if is_access_limited_admin_user(request.user):
+        if is_limited_access_admin_user(request.user):
             return False
 
         return getattr(super(UserProfileInline, self), method)(request)
@@ -321,13 +321,13 @@ class UserAdmin(BaseUserAdmin):
     limited_list_display = ('username', 'email')
 
     def get_fieldsets(self, request, obj=None):
-        if is_access_limited_admin_user(request.user):
+        if is_limited_access_admin_user(request.user):
             return self.limited_fieldsets
 
         return super(UserAdmin, self).get_fieldsets(request, obj)
 
     def get_list_display(self, request):
-        if is_access_limited_admin_user(request.user):
+        if is_limited_access_admin_user(request.user):
             return self.limited_list_display
 
         return super(UserAdmin, self).get_list_display(request)
@@ -388,7 +388,7 @@ except NotRegistered:
 
 class GroupAdmin(BaseGroupAdmin):
     def has_permission(self, request, method):
-        if is_access_limited_admin_user(request.user):
+        if is_limited_access_admin_user(request.user):
             return False
 
         return getattr(super(GroupAdmin, self), method)(request)

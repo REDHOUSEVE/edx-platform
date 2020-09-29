@@ -319,7 +319,7 @@ FEATURES = {
 
     # Set this to true to make API docs available at /api-docs/.
     'ENABLE_API_DOCS': False,
-    'ACCESS_LIMITED_ADMIN_GROUPS': ['Edly Staff'],
+    'LIMITED_ACCESS_ADMIN_GROUPS': ['Edly Staff'],
 }
 
 ENABLE_JASMINE = False

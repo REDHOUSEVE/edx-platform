@@ -413,7 +413,7 @@ FEATURES = {
 
     # Figures flags
     'FIGURES_IS_MULTISITE': True,
-    'ACCESS_LIMITED_ADMIN_GROUPS': ['Edly Staff'],
+    'LIMITED_ACCESS_ADMIN_GROUPS': ['Edly Staff'],
 }
 
 # Settings for the course reviews tool template and identification key, set either to None to disable course reviews
