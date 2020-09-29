@@ -139,4 +139,5 @@ class UpdateUserActiveStatus(UpdateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
 
     def put(self, request, *args, **kwargs):
+        request.data.pop('id', None)
         return self.partial_update(request, *args, **kwargs)
