@@ -666,3 +666,8 @@ def do_create_account(form, custom_form=None):
         raise
 
     return user, profile, registration
+
+
+def is_limited_access_admin_user(user):
+    LIMITED_ACCESS_ADMIN_GROUPS = settings.FEATURES.get('LIMITED_ACCESS_ADMIN_GROUPS') or []
+    return user.groups.filter(name__in=LIMITED_ACCESS_ADMIN_GROUPS).exists()
