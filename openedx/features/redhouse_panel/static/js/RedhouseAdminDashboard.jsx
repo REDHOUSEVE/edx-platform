@@ -8,16 +8,15 @@ import {
 } from 'react-router-dom';
 
 import PanelNavbar from './containers/Navbar';
+import Dashboard from './containers/Dashboard';
 
 
-export default function Dashboard({ context }) {
+export default function AdminPanel({ context }) {
     return (
         <Router basename={context.base_url} >
             <PanelNavbar />
             <Switch>
-                <Route exact path='/' >
-                    <div>Admin Home Page</div>
-                </Route>
+                <Route exact path='/' component={Dashboard} />
                 <Route path='/people' >
                     <div>People Page</div>
                 </Route>
@@ -32,7 +31,7 @@ export default function Dashboard({ context }) {
 export class RedhouseAdminDashboard {
     constructor(context) {
         ReactDOM.render(
-            <Dashboard context={context} />,
+            <AdminPanel context={context} />,
             document.getElementById('root'),
         );
     }
