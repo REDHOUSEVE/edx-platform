@@ -14,7 +14,7 @@ users_router.register(r'users', views.UserAccountView, base_name='users')
 
 urlpatterns = [
     url(r'', include(users_router.urls)),
-    url(r'^site/(?P<pk>\d+)/$', views.SiteView.as_view(), name='site'),
+    url(r'^site/?$', views.SiteView.as_view(), name='site'),
     url(
         r'^account_stats/?$',
         views.UsersAccountStatsAPIView.as_view(),
