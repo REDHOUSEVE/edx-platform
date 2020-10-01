@@ -5,6 +5,7 @@ from django.conf.urls import url, include
 
 from openedx.features.redhouse_panel.views import render_redhouse_panel
 
+
 app_name = 'redhouse_panel'
 
 urlpatterns = [
