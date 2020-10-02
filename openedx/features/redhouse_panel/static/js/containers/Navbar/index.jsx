@@ -2,19 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavLink } from 'react-router-dom';
 
-import AdminIcon from '../../../images/icon-admin.svg';
-var logoTwo = require('svg-inline-loader?classPrefix!../../../images/icon-admin.svg');
-
-import {
-    Collapse,
-    Navbar,
-    NavbarBrand,
-    Nav,
-    NavItem
-} from 'reactstrap';
-
 export default function PanelNavbar(props) {
-    console.log(logoTwo, "AdminIcon");
     return (
         <nav className='dashboard-nav'>
             <ul>
