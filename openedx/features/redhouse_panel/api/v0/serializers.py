@@ -1,17 +1,17 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from openedx.features.edly.utils import (
     create_user_link_with_edly_sub_organization,
     get_edx_org_from_cookie
 )
-from openedx.features.redhouse_panel.constants import REDHOUSE_PANEL_GROUP_NAME
-from openedx.features.redhouse_panel.utils import set_global_course_creator_status
-from student import auth
+from openedx.features.redhouse_panel.utils import (
+    set_global_course_creator_status,
+    has_panel_permission,
+    has_course_creator_permissions,
+    set_panel_access
+)
 from student.models import UserProfile
-from student.roles import CourseCreatorRole, GlobalCourseCreatorRole
 
 User = get_user_model()
 
@@ -29,7 +29,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserAccountSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer()
-    can_access_panel = serializers.SerializerMethodField('has_panel_permission')
+    can_access_panel = serializers.SerializerMethodField('has_panel_access')
     is_instructor = serializers.SerializerMethodField('can_create_courses')
 
     class Meta:
@@ -37,42 +37,28 @@ class UserAccountSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
         fields = ('username', 'email', 'is_active', 'profile', 'can_access_panel', 'is_instructor')
 
-    def has_panel_permission(self, obj):
-        if obj.groups.filter(name__in=[REDHOUSE_PANEL_GROUP_NAME]).exists():
-            return True
-        return False
+    @staticmethod
+    def has_panel_access(obj):
+        return has_panel_permission(obj)
 
     def can_create_courses(self, obj):
         request = self.context['request']
-        edly_user_info_cookie = request.COOKIES.get(settings.EDLY_USER_INFO_COOKIE_NAME, None) if request else None
-        edx_org = get_edx_org_from_cookie(edly_user_info_cookie)
-
-        if auth.user_has_role(obj, GlobalCourseCreatorRole(edx_org)):
-            return True
-        return False
+        return has_course_creator_permissions(request, obj)
 
     def create(self, validated_data):
-        # create user
         profile_data = validated_data.pop('profile')
         can_access_panel = self.initial_data.get('can_access_panel', None)
         is_instructor = self.initial_data.get('is_instructor', None)
 
         user = User.objects.create(**validated_data)
 
-        # create profile
-        UserProfile.objects.create(
-            user=user,
-            name=profile_data.get('name', None),
-            year_of_birth=profile_data.get('year_of_birth', None)
-        )
+        UserProfile.objects.create(user=user, **profile_data)
 
-        # create EdlyUserProfile
         request = self.context['request']
         create_user_link_with_edly_sub_organization(request, user)
 
         if can_access_panel:
-            panel_group, _ = Group.objects.get_or_create(name=REDHOUSE_PANEL_GROUP_NAME)
-            user.groups.add(panel_group)
+            set_panel_access(user, can_access_panel)
 
         if is_instructor:
             # We are only setting the user as GlobalCourseInstructor, which means the user
@@ -86,27 +72,24 @@ class UserAccountSerializer(serializers.ModelSerializer):
 
     def update(self, user, validated_data):
         profile_data = validated_data.pop('profile', None)
-        can_access_panel = self.initial_data.get('can_access_panel', None)
         request = self.context['request']
 
-        # updating user data
         user.email = validated_data.get('email', user.email)
         user.is_active = validated_data.get('is_active', user.is_active)
-        user.save()
+        user.save(update_fields=['is_active', 'email'])
 
         if profile_data:
-            # updating profile data
             UserProfile.objects.update_or_create(
                 user=user,
                 defaults={
-                    'name': profile_data.get('name', None),
-                    'year_of_birth': profile_data.get('year_of_birth', None)
+                    'name': profile_data.get('name'),
+                    'year_of_birth': profile_data.get('year_of_birth')
                 }
             )
 
-        if can_access_panel and not user.groups.filter(name__in=[REDHOUSE_PANEL_GROUP_NAME]).exists():
-            panel_group, _ = Group.objects.get_or_create(name=REDHOUSE_PANEL_GROUP_NAME)
-            user.groups.add(panel_group)
+        if 'can_access_panel' in self.initial_data.keys():
+            can_access_panel = self.initial_data.get('can_access_panel')
+            set_panel_access(user, can_access_panel)
 
         if 'is_instructor' in self.initial_data.keys():
             # We are only setting the user as GlobalCourseInstructor, which means the user
@@ -116,3 +99,18 @@ class UserAccountSerializer(serializers.ModelSerializer):
             set_global_course_creator_status(request, user, is_instructor)
 
         return user
+
+    def is_valid(self, raise_exception=False):
+        try:
+            super(UserAccountSerializer, self).is_valid(raise_exception)
+        except serializers.ValidationError:
+            pass
+
+        errors = self.errors.copy()
+        extra_fields = ['is_instructor', 'can_access_panel']
+        for field in extra_fields:
+            if field in self.initial_data.keys():
+                if type(self.initial_data[field]) != bool:
+                    errors[field] = ['"{}" is not a valid boolean.'.format(self.initial_data.get(field))]
+        if errors:
+            raise serializers.ValidationError(errors)

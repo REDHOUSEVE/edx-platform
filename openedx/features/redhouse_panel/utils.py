@@ -1,11 +1,14 @@
 from datetime import datetime
 from django.conf import settings
+from django.contrib.auth.models import Group
 
 from openedx.features.edly.utils import (
     get_edx_org_from_cookie,
     update_course_creator_status,
 )
+from openedx.features.redhouse_panel.constants import REDHOUSE_PANEL_GROUP_NAME
 
+from student import auth
 from student.roles import (
     CourseInstructorRole,
     CourseStaffRole,
@@ -43,3 +46,22 @@ def set_global_course_creator_status(request, user, set_global_creator):
         staff_courses_keys = [course.course_id for course in staff_courses]
         UserBasedRole(user, CourseInstructorRole.ROLE).remove_courses(*instructor_courses_keys)
         UserBasedRole(user, CourseStaffRole.ROLE).remove_courses(*staff_courses_keys)
+
+
+def has_panel_permission(user):
+    return user.is_superuser or user.groups.filter(name__in=[REDHOUSE_PANEL_GROUP_NAME]).exists()
+
+
+def has_course_creator_permissions(request, user):
+    edly_user_info_cookie = request.COOKIES.get(settings.EDLY_USER_INFO_COOKIE_NAME, None) if request else None
+    edx_org = get_edx_org_from_cookie(edly_user_info_cookie)
+
+    return auth.user_has_role(user, GlobalCourseCreatorRole(edx_org))
+
+
+def set_panel_access(user, can_access):
+    panel_group, __ = Group.objects.get_or_create(name=REDHOUSE_PANEL_GROUP_NAME)
+    if can_access:
+        user.groups.add(panel_group)
+    else:
+        user.groups.remove(panel_group)

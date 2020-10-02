@@ -4,17 +4,17 @@ from __future__ import unicode_literals
 
 from django.db import migrations
 
+from openedx.features.redhouse_panel.constants import REDHOUSE_PANEL_GROUP_NAME
 
 
 def apply_migration(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
-    group, __ = Group.objects.get_or_create(name=REDHOUSE_ADMIN_PANEL_ACCESS)
-    group.save()
+    group, __ = Group.objects.get_or_create(name=REDHOUSE_PANEL_GROUP_NAME)
 
 
 def revert_migration(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
-    Group.objects.filter(name=REDHOUSE_ADMIN_PANEL_ACCESS).delete()
+    Group.objects.filter(name=REDHOUSE_PANEL_GROUP_NAME).delete()
 
 
 class Migration(migrations.Migration):

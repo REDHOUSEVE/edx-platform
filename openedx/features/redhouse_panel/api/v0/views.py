@@ -157,14 +157,7 @@ class UserAccountView(viewsets.ModelViewSet):
     lookup_field = 'username'
 
     def get_queryset(self):
-        """
-        Return list of Users.
-        """
-
-        # Get the list of the site organizations
         site_organizations = configuration_helpers.get_current_site_orgs()
 
-        user_records = User.objects.select_related('profile').filter(
+        return User.objects.select_related('profile').filter(
             Q(edly_profile__edly_sub_organizations__slug__in=site_organizations))
-
-        return user_records
