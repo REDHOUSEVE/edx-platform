@@ -5,6 +5,7 @@ from rest_framework import serializers
 from openedx.features.edly.utils import create_user_link_with_edly_sub_organization
 from openedx.features.redhouse_panel.constants import REDHOUSE_PANEL_GROUP_NAME
 from student.models import UserProfile
+from openedx.features.redhouse_panel.helpers import send_password_set_email_for_user
 
 User = get_user_model()
 
@@ -57,8 +58,8 @@ class UserAccountSerializer(serializers.ModelSerializer):
             panel_group, _ = Group.objects.get_or_create(name=REDHOUSE_PANEL_GROUP_NAME)
             user.groups.add(panel_group)
 
-        #TODO
-        # send_password_set_email_to_user()
+        send_password_set_email_for_user(user, self.context['request'])
+
         return user
 
     def update(self, user, validated_data):
