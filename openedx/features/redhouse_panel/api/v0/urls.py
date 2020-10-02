@@ -1,16 +1,20 @@
 """
 URLs for the Redhouse Panel v0 APIs.
 """
-from django.conf.urls import url
+from django.conf.urls import include, url
+from rest_framework import routers
 
 from openedx.features.redhouse_panel.api.v0 import views
 
 app_name = 'redhouse_panel_api.v0'
 
+users_router = routers.DefaultRouter()
+users_router.register(r'users', views.UserAccountView, base_name='users')
+
 
 urlpatterns = [
-    url(r'^site/(?P<pk>\d+)/$', views.SiteView.as_view(), name='site'),
-    url(r'^users/(?P<pk>\d+)/update/?$', views.UpdateUserActiveStatus.as_view(), name='update_user_active_status'),
+    url(r'', include(users_router.urls)),
+    url(r'^site/?$', views.SiteView.as_view(), name='site'),
     url(
         r'^account_stats/?$',
         views.UsersAccountStatsAPIView.as_view(),

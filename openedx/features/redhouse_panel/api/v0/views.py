@@ -1,22 +1,25 @@
+import logging
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
 from django.db.models import F, Q, Count, Case, When, OuterRef, Exists, BooleanField
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.generics import UpdateAPIView
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework import filters, viewsets
 from rest_framework_oauth.authentication import OAuth2Authentication
 
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
-from openedx.core.djangoapps.site_configuration.models import SiteConfiguration
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.core.djangoapps.theming.helpers import get_current_site
-from openedx.core.lib.api.permissions import IsStaffOrOwner
-from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UserSerializer
+from openedx.features.redhouse_panel.api.v0.serializers import SiteSerializer, UserAccountSerializer
+from openedx.features.redhouse_panel.api.permissions import CanAccessRedhousePanel
 from student.models import CourseAccessRole
 from student.roles import CourseStaffRole, CourseInstructorRole
+from util.json_request import JsonResponse
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -27,7 +30,7 @@ class UsersAccountStatsAPIView(APIView):
         OAuth2Authentication,
         SessionAuthentication,
     )
-    permission_classes = (IsAuthenticated, IsStaffOrOwner,)
+    permission_classes = (IsAuthenticated, CanAccessRedhousePanel,)
 
     default_stats = {
         'instructor_count': 0,
@@ -91,14 +94,14 @@ class UsersAccountStatsAPIView(APIView):
                     stats[key] = 0
                 stats[key] = stats[key] + stat[key]
 
-        return Response(data=stats, status=status.HTTP_200_OK)
+        return JsonResponse(stats, status=status.HTTP_200_OK)
 
 
 class SiteView(APIView):
     authentication_classes = (JwtAuthentication, OAuth2Authentication, SessionAuthentication,)
-    permission_classes = (IsAuthenticated, IsStaffOrOwner,)
+    permission_classes = (IsAuthenticated, CanAccessRedhousePanel,)
 
-    def get(self, request, pk):
+    def get(self, request):
         """
         Return `Site` in the form of an object.
         Raises:
@@ -110,34 +113,51 @@ class SiteView(APIView):
                 "address": "Silicon Valley"
             }
         """
-        site = get_object_or_404(Site, pk=pk)
-        site_configuration = SiteConfiguration.objects.filter(site=site).first()
+        site_configuration = configuration_helpers.get_current_site_configuration()
         data = {
-            'name': site.name,
+            'name': site_configuration.get_value('school_name', settings.PLATFORM_NAME),
             'address': site_configuration.values.get('address') if site_configuration else '',
         }
-        return Response(SiteSerializer(data).data)
+        return JsonResponse(SiteSerializer(data).data)
 
 
-class UpdateUserActiveStatus(UpdateAPIView):
+class UserAccountView(viewsets.ModelViewSet):
     """
-    View to change user's active status
-    Raises:
-        NotFound: Raised if user with `pk` provided in `URL` does not exist.
+    Return the list of `Users` associated with the requested site
+
     Example:
-        `PUT/PATCH: /admin-panel/api/v0/users/1/update`
-        body: {"is_active": false}
-        :returns
+        [
             {
-                "id": "1",
-                "is_active": false
-            }
+                id: 2,
+                is_superuser: true,
+                username: "edx",
+                email: "edx@example.com",
+                is_staff: true,
+                is_active: true,
+                profile: {
+                    name: "First Last",
+                    year_of_birth: null
+                },
+                groups: [
+                    {
+                        name: "Redhouse Admin Panel Access"
+                    }
+                ]
+            },
+            ....
+        ]
     """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    authentication_classes = (SessionAuthentication, JwtAuthentication, OAuth2Authentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser)
 
-    def put(self, request, *args, **kwargs):
-        request.data.pop('id', None)
-        return self.partial_update(request, *args, **kwargs)
+    authentication_classes = (JwtAuthentication, OAuth2Authentication, SessionAuthentication,)
+    permission_classes = (IsAuthenticated, CanAccessRedhousePanel,)
+    http_method_names = ['get', 'post', 'patch']
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['profile__name', 'username', 'email']
+    serializer_class = UserAccountSerializer
+    lookup_field = 'username'
+
+    def get_queryset(self):
+        site_organizations = configuration_helpers.get_current_site_orgs()
+
+        return User.objects.select_related('profile').filter(
+            Q(edly_profile__edly_sub_organizations__slug__in=site_organizations))

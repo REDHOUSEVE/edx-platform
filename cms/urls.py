@@ -282,6 +282,9 @@ if settings.FEATURES.get('ENABLE_API_DOCS'):
     urlpatterns += [
         url(r'^api-docs/$', get_swagger_view(title='Studio API')),
     ]
+urlpatterns += [
+    url(r'^redhouse-panel/', include('openedx.features.redhouse_panel.urls'))
+]
 
 from openedx.core.djangoapps.plugins import constants as plugin_constants, plugin_urls
 urlpatterns.extend(plugin_urls.get_patterns(plugin_constants.ProjectType.CMS))
