@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+    CustomInput,
     Card,
     CardTitle,
     Container,
@@ -43,35 +44,37 @@ export default function PermissionsManager(props) {
     return (
         <div>
             <Card>
-                <CardTitle>PROFILES AND PRIVILEGES</CardTitle>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            {ROLES.map(role => (
-                                <th key={role}>{role}</th>
-                            ))}
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {PERMISSIONS.map((permission, idxP) => (
-                            <tr key={permission}>
-                                <th scope='row'>{permission}</th>
-                                {ROLES.map((role, idxR) => (
-                                    <td key={role}>
-                                        <input
-                                            type='checkbox'
-                                            id={`${permission}-${role}`}
-                                            checked={isChecked(permission, role)}
-                                            onChange={toggleChecked}
-                                        />
-                                    </td>
+                <CardTitle><h2>PROFILES AND PRIVILEGES</h2></CardTitle>
+                <div className='permissions-table'>
+                    <Table className='table-striped'>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                {ROLES.map(role => (
+                                    <th key={role}>{role}</th>
                                 ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {PERMISSIONS.map((permission, idxP) => (
+                                <tr key={permission}>
+                                    <td scope='row'><strong>{permission}</strong></td>
+                                    {ROLES.map((role, idxR) => (
+                                        <td key={role} className='checkbox-col'>
+                                            <CustomInput
+                                                type='checkbox'
+                                                className='checkbox-lg no-label'
+                                                id={`${permission}-${role}`}
+                                                checked={isChecked(permission, role)}
+                                                onChange={toggleChecked}
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
             </Card>
         </div>
     )

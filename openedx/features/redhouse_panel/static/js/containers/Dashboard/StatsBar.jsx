@@ -1,28 +1,21 @@
 import React from 'react';
-
-import {
-    Card,
-    Row,
-    Col,
-} from 'reactstrap';
-
+import { Card } from 'reactstrap';
 import StatsBox from './StatsBox';
-
 
 export default function StatsBar(props) {
     return (
         <Card>
-            <Row>
-                <Col sm={{ size: 'auto', offset: 3 }}>
-                    <StatsBox number={1} text={'Teachers/Admins'} />
-                </Col>
-                <Col sm={{ size: 'auto', offset: 1 }}>
-                    <StatsBox number={1} text={'Student Accounts'} />
-                </Col>
-                <Col sm={{ size: 'auto', offset: 1 }}>
-                    <StatsBox number={1} text={'Public Accounts'} />
-                </Col>
-            </Row>
+            <ul className='stats-list'>
+                <li>
+                    <StatsBox number={'165'} text={'Teachers/Admins'} />
+                </li>
+                <li>
+                    <StatsBox number={'2,129'} text={'Student Accounts'} />
+                </li>
+                <li>
+                    <StatsBox number={'1,000'} text={'Public Accounts'} />
+                </li>
+            </ul>
         </Card>
     )
 }

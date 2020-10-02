@@ -12,30 +12,23 @@ import {
 export default function SchoolInfo(props) {
     return (
         <Card>
-            <CardTitle>School Information</CardTitle>
+            <CardTitle><h2>School Information</h2></CardTitle>
             <CardBody>
-                <Row>
-                    <Col sm='12' md='4'>
-                        <img
-                            className='rounded-circle w-100'
-                            src='https://sms.northhills.edu.pk/uploads/website/officers/anonymous-user.png'
-                        />
-                    </Col>
-                    <Col sm='12' md='auto'>
-                        <Row>
-                            <span>Name:</span>
-                        </Row>
-                        <Row>
-                            <span>John Doe</span>
-                        </Row>
-                        <Row>
-                            <span>Address:</span>
-                        </Row>
-                        <Row>
-                            <span>15 Yemen Road, Yemen</span>
-                        </Row>
-                    </Col>
-                </Row>
+                <img
+                    src='https://sms.northhills.edu.pk/uploads/website/officers/anonymous-user.png'
+                />
+                <Col>
+                    <ul>
+                        <li>
+                            <span className='title'>Name</span>
+                            <span className='text'>Dallas Independent School District</span>
+                        </li>
+                        <li>
+                            <span className='title'>Address</span>
+                            <span className='text'>5555 Maple Ave, Dallas, TX 75235</span>
+                        </li>
+                    </ul>
+                </Col>
             </CardBody>
         </Card>
     )
