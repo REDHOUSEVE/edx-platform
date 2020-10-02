@@ -4,7 +4,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin.sites import NotRegistered
 from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, Group, GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserChangeForm as BaseUserChangeForm
 from django.db import models
 from django.http.request import QueryDict
@@ -15,6 +15,7 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.waffle_utils import WaffleSwitch
 from openedx.core.lib.courses import clean_course_id
 from student import STUDENT_WAFFLE_NAMESPACE
+from student.helpers import is_limited_access_admin_user
 from student.models import (
     AccountRecovery,
     CourseAccessRole,
@@ -266,6 +267,24 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = _('User profile')
 
+    def has_permission(self, request, method):
+        if is_limited_access_admin_user(request.user):
+            return False
+
+        return getattr(super(UserProfileInline, self), method)(request)
+
+    def has_add_permission(self, request):
+        return self.has_permission(request, 'has_add_permission')
+
+    def has_change_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_change_permission')
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_delete_permission')
+
+    def has_module_permission(self, request):
+        return self.has_permission(request, 'has_module_permission')
+
 
 class AccountRecoveryInline(admin.StackedInline):
     """ Inline admin interface for AccountRecovery model. """
@@ -294,6 +313,25 @@ class UserAdmin(BaseUserAdmin):
     inlines = (UserProfileInline, AccountRecoveryInline)
     form = UserChangeForm
 
+    limited_fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('email',)}),
+    )
+
+    limited_list_display = ('username', 'email')
+
+    def get_fieldsets(self, request, obj=None):
+        if is_limited_access_admin_user(request.user):
+            return self.limited_fieldsets
+
+        return super(UserAdmin, self).get_fieldsets(request, obj)
+
+    def get_list_display(self, request):
+        if is_limited_access_admin_user(request.user):
+            return self.limited_list_display
+
+        return super(UserAdmin, self).get_list_display(request)
+
     def get_readonly_fields(self, request, obj=None):
         """
         Allows editing the users while skipping the username check, so we can have Unicode username with no problems.
@@ -303,6 +341,15 @@ class UserAdmin(BaseUserAdmin):
         if obj:
             return django_readonly + ('username',)
         return django_readonly
+
+    def has_permission(self, request, method):
+        if is_limited_access_admin_user(request.user):
+            return False
+
+        return getattr(super(UserAdmin, self), method)(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_delete_permission')
 
 
 @admin.register(UserAttribute)
@@ -333,7 +380,6 @@ admin.site.register(PendingNameChange)
 admin.site.register(DashboardConfiguration, ConfigurationModelAdmin)
 admin.site.register(RegistrationCookieConfiguration, ConfigurationModelAdmin)
 
-
 # We must first un-register the User model since it may also be registered by the auth app.
 try:
     admin.site.unregister(User)
@@ -341,3 +387,32 @@ except NotRegistered:
     pass
 
 admin.site.register(User, UserAdmin)
+
+# We must first un-register the User model since it may also be registered by the auth app.
+try:
+    admin.site.unregister(Group)
+except NotRegistered:
+    pass
+
+
+class GroupAdmin(BaseGroupAdmin):
+    def has_permission(self, request, method):
+        if is_limited_access_admin_user(request.user):
+            return False
+
+        return getattr(super(GroupAdmin, self), method)(request)
+
+    def has_add_permission(self, request):
+        return self.has_permission(request, 'has_add_permission')
+
+    def has_change_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_change_permission')
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_delete_permission')
+
+    def has_module_permission(self, request):
+        return self.has_permission(request, 'has_module_permission')
+
+
+admin.site.register(Group, GroupAdmin)
