@@ -1,40 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+import AdminIcon from '../../../images/icon-admin.svg';
+var logoTwo = require('svg-inline-loader?classPrefix!../../../images/icon-admin.svg');
 
 import {
     Collapse,
     Navbar,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink,
-
+    NavItem
 } from 'reactstrap';
 
-
 export default function PanelNavbar(props) {
+    console.log(logoTwo, "AdminIcon");
     return (
-        <div>
-            <Navbar color='light' light expand='md'>
-                <Nav className='mr-auto' navbar>
-                    <NavItem>
-                        <NavLink tag={Link} to='/'>
-                            Admin
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to='/people'>
-                            People
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to='/settings'>
-                            Settings
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-            </Navbar>
-        </div>
+        <nav className='dashboard-nav'>
+            <ul>
+                <li>
+                    <NavLink to='/' activeClassName='active'>
+                        <span className='icon-box'>
+                            <img src='../../../static/images/icon-admin.svg' />
+                        </span>
+                        Admin
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/people' activeClassName='active'>
+                        <span className='icon-box'>
+                            <img src='../../../static/images/icon-team.svg' />
+                        </span>
+                        People
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/settings' activeClassName='active'>
+                        <span className='icon-box'>
+                            <img src='../../../static/images/icon-settings.svg' />
+                        </span>
+                        Settings
+                    </NavLink>
+                </li>
+            </ul>
+        </nav>
     )
 }

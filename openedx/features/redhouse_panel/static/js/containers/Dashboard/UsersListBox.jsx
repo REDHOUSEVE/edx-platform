@@ -4,44 +4,37 @@ import {
     Card,
     CardTitle,
     CardBody,
-    CardText,
-    Row,
-    Col
+    Col,
+    Table,
+    CardFooter
 } from 'reactstrap';
-
 
 export default function UsersListBox({ title, data }) {
     return (
-        <div>
-            <Card>
-                <CardTitle>{title}</CardTitle>
-                <CardBody>
-                    <CardText>
-                        <ul className='overflow-auto box-list'>
-                            {data.map((row, idx) => (
-                                <li key={idx}>
-                                    <Row>
-                                        <Col md={2}>
-                                            <img className='w-100 h-100 rounded-circle' src='https://rnmu.rw/wp-content/uploads/2019/10/man-300x300.png'/>
-                                        </Col>
-                                        <Col md={6}>
-                                            <span>{row.name}</span>
-                                        </Col>
-                                        <Col md={4}>
-                                            <span className='btn btn-primary'>View</span>
-                                        </Col>
-                                    </Row>
-                                </li>
-                            ))}
-                        </ul>
-                        <Row>
-                            <Col className='d-flex justify-content-center'>
-                                <span class='btn btn-outlined-secondary center'>View All</span>
-                            </Col>
-                        </Row>
-                    </CardText>
-                </CardBody>
-            </Card>
-        </div>
+        <Card>
+            <CardTitle><h2>{title}</h2></CardTitle>
+            <CardBody>
+                <Table className='table-striped'>
+                    <tbody>
+                    {data.map((row, idx) => (
+                        <tr key={idx}>
+                            <td className='img-col'>
+                                <img src='https://rnmu.rw/wp-content/uploads/2019/10/man-300x300.png' height='39' width='39' />
+                            </td>
+                            <td>
+                                <strong>{row.name}</strong>
+                            </td>
+                            <td className='btn-col'>
+                                <span className='btn btn-outline-default'>View</span>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            </CardBody>
+            <CardFooter>
+                <span className='text-link'>View All</span>
+            </CardFooter>
+        </Card>
     )
 }
