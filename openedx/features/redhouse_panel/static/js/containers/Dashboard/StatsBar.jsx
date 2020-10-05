@@ -1,21 +1,43 @@
-import React from 'react';
-import { Card } from 'reactstrap';
-import StatsBox from './StatsBox';
+import React, { useState, useEffect } from "react";
+import { Card } from "reactstrap";
+import StatsBox from "./StatsBox";
+import Loader from "../../common/components/Loader";
+
+import UserApiClient from "../../lib/api/usersApi";
 
 export default function StatsBar(props) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [stats, setStats] = useState({
+        instructorCount: 0,
+        studentCount: 0,
+    });
+
+    async function setUserStats() {
+        const stats = await UserApiClient.getAccountsStats();
+        setStats(stats);
+        setIsLoading(false);
+    }
+    useEffect(() => {
+        setUserStats();
+    }, []);
     return (
         <Card>
-            <ul className='stats-list'>
-                <li>
-                    <StatsBox number={'165'} text={'Teachers/Admins'} />
-                </li>
-                <li>
-                    <StatsBox number={'2,129'} text={'Student Accounts'} />
-                </li>
-                <li>
-                    <StatsBox number={'1,000'} text={'Public Accounts'} />
-                </li>
-            </ul>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <ul className="stats-list">
+                     <Loader />
+                    <li>
+                        <StatsBox number={stats.instructorCount} text={"Teachers/Admins"} />
+                    </li>
+                    <li>
+                        <StatsBox number={stats.studentCount} text={"Student Accounts"} />
+                    </li>
+                    <li>
+                        <StatsBox number={"1,000"} text={"Public Accounts"} />
+                    </li>
+                </ul>
+            )}
         </Card>
-    )
+    );
 }
