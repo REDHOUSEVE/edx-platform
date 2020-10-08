@@ -114,6 +114,7 @@ module.exports = Merge.smart({
 
             // Redhouse
             RedhouseAdminDashboard: './openedx/features/redhouse_panel/static/js/RedhouseAdminDashboard.jsx',
+            ModelViewer: './openedx/features/sketchfab_viewer/static/js/ModelViewer/index.js',
 
             CookiePolicyBanner: './common/static/js/src/CookiePolicyBanner.jsx',
 

@@ -30,7 +30,29 @@ var optimizedConfig = Merge.smart(commonConfig, {
             filename: 'commons.[chunkhash].js',
             minChunks: 3
         })
-    ]
+    ],
+    module: {
+        rules: [
+            {
+                test: /(.scss|.css)$/,
+                include: [
+                    /paragon/,
+                    /font-awesome/,
+                    /redhouse_panel/,
+                    /sketchfab_viewer/
+                ],
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: false,
+                        }
+                    },
+                ]
+            }
+        ]
+    }
 }});
 
 // requireCompatConfig only exists so that you can use RequireJS to require a

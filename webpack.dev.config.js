@@ -30,7 +30,8 @@ module.exports = _.values(Merge.smart(commonConfig, {
                     include: [
                         /paragon/,
                         /font-awesome/,
-                        /redhouse_panel/
+                        /redhouse_panel/,
+                        /sketchfab_viewer/
                     ],
                     use: [
                         'style-loader',
