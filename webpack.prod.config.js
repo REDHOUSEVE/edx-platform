@@ -39,7 +39,7 @@ var optimizedConfig = Merge.smart(commonConfig, {
                     /paragon/,
                     /font-awesome/,
                     /redhouse_panel/,
-                    /sketchfab_viewer/
+                    /xviewer/
                 ],
                 use: [
                     'style-loader',

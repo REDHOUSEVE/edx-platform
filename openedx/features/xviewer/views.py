@@ -4,23 +4,23 @@ from web_fragments.fragment import Fragment
 from openedx.core.djangoapps.plugin_api.views import EdxFragmentView
 
 
-class SketchfabViewerFragmentView(EdxFragmentView):
+class XViewerFragmentView(EdxFragmentView):
     """
-    Component implementation of the sketchfab viewer.
+    Component implementation of the XViewer viewer.
     """
 
     def render_to_fragment(self, request, course_id=None, **kwargs):
         """
-        Render the sketchfab viewer to a fragment.
+        Render the XViewer viewer to a fragment.
 
         Args:
             request: The Django request.
             course_id: The id of the course in question.
 
         Returns:
-            Fragment: The fragment representing the sketchfab viewer
+            Fragment: The fragment representing the XViewer viewer
         """
-        html = render_to_string('sketchfab_viewer/index.html', {})
+        html = render_to_string('xviewer/index.html', {})
 
         fragment = Fragment(html)
         self.add_fragment_resource_urls(fragment)

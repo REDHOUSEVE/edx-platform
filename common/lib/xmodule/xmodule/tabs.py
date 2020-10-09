@@ -403,10 +403,10 @@ class CourseTabList(List):
             CourseTab.load('progress'),
         ])
 
-        # If the feature is enabled, add sketchfab viewer tab in every course
+        # If the feature is enabled, add xviewertab in every course
         # by default.
-        if settings.FEATURES.get('ENABLE_SKETCHFAB_VIEWER_TAB'):
-            course.tabs.append(CourseTab.load('sketchfab_viewer'))
+        if settings.FEATURES.get('ENABLE_XVIEWER_TAB'):
+            course.tabs.append(CourseTab.load('xviewer'))
 
     @staticmethod
     def get_discussion(course):
