@@ -35,6 +35,7 @@ setup(
             "teams = lms.djangoapps.teams.plugins:TeamsTab",
             "textbooks = lms.djangoapps.courseware.tabs:TextbookTabs",
             "wiki = lms.djangoapps.course_wiki.tab:WikiTab",
+            "sketchfab_viewer = openedx.features.sketchfab_viewer.plugins:SketchfabViewerTab"
         ],
         "openedx.course_tool": [
             "course_bookmarks = openedx.features.course_bookmarks.plugins:CourseBookmarksTool",
