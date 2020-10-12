@@ -19,7 +19,8 @@ class XViewerTab(TabFragmentViewMixin, EnrolledTab):
         """
         Returns true if this tab is enabled.
         """
-        return settings.FEATURES.get('ENABLE_XVIEWER_TAB', False)
+        is_enabled = super(XViewerTab, cls).is_enabled(course, user)
+        return settings.FEATURES.get('ENABLE_XVIEWER_TAB', False) and is_enabled
 
     @property
     def uses_bootstrap(self):
