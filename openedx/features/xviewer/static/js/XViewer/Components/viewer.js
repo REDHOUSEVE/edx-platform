@@ -12,9 +12,9 @@ function callSketch(uid= "65ba4778de1843c4b18e69380b20dc67"){
     //var uid = '7w7pAfrCfjovwykkEeRFLGw5SXS'; // soldier (?)
     //var uid = 'd70c2d341f01493480080659d0594c78'; // Classroom
     // By default, the latest version of the viewer API will be used.
-    
+
     var client = new window.Sketchfab( '1.7.1', iframe );
-    
+
 
     // Alternatively, you can request a specific version.
     // var client = new Sketchfab( '1.7.1', iframe );
@@ -52,7 +52,7 @@ class Viewer extends React.Component{
         this.search = this.search.bind(this);
         this.searchByURL = this.searchByURL.bind(this);
     }
-    
+
     componentDidMount(){
         callSketch();
         this.search();
@@ -60,7 +60,7 @@ class Viewer extends React.Component{
 
     getPageByURL(url) {
       return new Promise((resolve, reject) => {
-        axios.get(url, 
+        axios.get(url,
           {headers: {
             'Authorization' : 'Token d1a2be40a3034b3794fe540de52f5c11'
           }})
@@ -80,7 +80,7 @@ class Viewer extends React.Component{
               {
                   var temp = []
                   for(let i=0; i < results.results.length; i++){
-                      temp.push([results.results[i].name, results.results[i].thumbnails.images[1].url, results.results[i].uid])           
+                      temp.push([results.results[i].name, results.results[i].thumbnails.images[1].url, results.results[i].uid])
                   }
                   this.setState({ modelsReturned: temp, previous_page_url: results.previous, next_page_url: results.next});
               }
@@ -97,14 +97,14 @@ class Viewer extends React.Component{
         });
     }
 
-    search(){          
+    search(){
       console.log("searching")                             //call API fxn, then assign into temp icons and names, then save in state
         this.searchAPI().then(
             results =>
             {
                 var temp = []
                 for(let i=0; i < results.results.length; i++){
-                    temp.push([results.results[i].name, results.results[i].thumbnails.images[1].url, results.results[i].uid])           
+                    temp.push([results.results[i].name, results.results[i].thumbnails.images[1].url, results.results[i].uid])
                 }
                 this.setState({ modelsReturned: temp, previous_page_url: results.previous, next_page_url: results.next});
             }
@@ -149,7 +149,7 @@ class Viewer extends React.Component{
             <Button variant="primary">Register</Button>
           </Nav.Link>
         </Nav>
-      </Navbar> 
+      </Navbar>
     </div>
     <div>
       <img
@@ -164,16 +164,16 @@ class Viewer extends React.Component{
       </center>
       <h4>Search for images to display in Virtual Reality:</h4>
 
-      
+
         <div class="col-6 d-flex justify-content-end">
           <input
             type="text"
             class="form-control"
             placeholder="e.g. Car"
             style={{
-              
 
-             
+
+
             }}
             onChange={this.handleChange}
           />
@@ -218,8 +218,8 @@ class Viewer extends React.Component{
                         </Card-Body>
                         </Card>
                         </CardDeck>
-                    
-                      
+
+
 
                 </th>
               ))}

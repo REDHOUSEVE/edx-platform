@@ -5,21 +5,21 @@ from xmodule.tabs import TabFragmentViewMixin
 from courseware.tabs import EnrolledTab
 
 
-class SketchfabViewerTab(TabFragmentViewMixin, EnrolledTab):
-    type = 'sketchfab_viewer'
-    name = 'sketchfab_viewer'
-    title = ugettext_noop('Sketchfab Viewer')
+class XViewerTab(TabFragmentViewMixin, EnrolledTab):
+    type = 'xviewer'
+    name = 'xviewer'
+    title = ugettext_noop('XVIEWER')
     is_movable = True
     is_default = True
     is_hideable = True
-    fragment_view_name = 'openedx.features.sketchfab_viewer.views.SketchfabViewerFragmentView'
+    fragment_view_name = 'openedx.features.xviewer.views.XViewerFragmentView'
 
     @classmethod
     def is_enabled(cls, course=None, user=None):
         """
         Returns true if this tab is enabled.
         """
-        return settings.FEATURES.get('ENABLE_SKETCHFAB_VIEWER_TAB', False)
+        return settings.FEATURES.get('ENABLE_XVIEWER_TAB', False)
 
     @property
     def uses_bootstrap(self):

@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name="Open edX",
-    version="0.11",
+    version="0.12",
     install_requires=["setuptools"],
     requires=[],
     # NOTE: These are not the names we should be installing.  This tree should
@@ -35,7 +35,7 @@ setup(
             "teams = lms.djangoapps.teams.plugins:TeamsTab",
             "textbooks = lms.djangoapps.courseware.tabs:TextbookTabs",
             "wiki = lms.djangoapps.course_wiki.tab:WikiTab",
-            "sketchfab_viewer = openedx.features.sketchfab_viewer.plugins:SketchfabViewerTab"
+            "xviewer = openedx.features.xviewer.plugins:XViewerTab"
         ],
         "openedx.course_tool": [
             "course_bookmarks = openedx.features.course_bookmarks.plugins:CourseBookmarksTool",
