@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react';
 import axios from 'axios';
-import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
@@ -126,41 +126,11 @@ class Viewer extends React.Component{
     <title>Sketchfab Viewer API example</title>
   </head>
   <body>
-    <div>
-      <Navbar
-        variant="light"
-        sticky="top"
-        style={{
-          borderStyle: "solid",
-          borderColor: "white white red white"
-        }}
-      >
-        <Navbar.Brand href="#home">
-          <img
-            alt=""
-            src="https://d32r2qmogsjfiy.cloudfront.net/2020/03/Redhouse-logo.png"
-            width="250"
-            className="d-inline-block align-top"
-            style={{ marginLeft: "0.5em" }}
-          />
-        </Navbar.Brand>
-        <Nav className="ml-auto">
-          <Nav.Link href="/login">
-            <Button variant="primary">Register</Button>
-          </Nav.Link>
-        </Nav>
-      </Navbar>
-    </div>
-    <div>
-      <img
-        src="https://static.stambol.com/wordpress/wp-content/uploads/2018/05/ARVRHeadsetDesign_1640x894.jpg"
-        style={{ width: "100%", height: "50%" }}
-      />
-    </div>
+
 
     <div class="container-flex p-5">
       <center>
-        <h1 class="m-3">Model Viewer</h1>
+        <h1 class="m-3">3D Model Viewer</h1>
       </center>
       <h4>Search for images to display in Virtual Reality:</h4>
 
