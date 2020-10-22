@@ -27,6 +27,9 @@
 @import 'base/reset';
 @import 'base/mixins';
 
+// Incude Panel Dashboard
+@import 'redhouse-panel/dashboard';
+
 // Pattern Library shims
 @import 'edx-pattern-library-shims/base/variables';
 @import 'edx-pattern-library-shims/breadcrumbs';

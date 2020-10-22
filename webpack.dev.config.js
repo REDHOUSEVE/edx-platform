@@ -29,7 +29,9 @@ module.exports = _.values(Merge.smart(commonConfig, {
                     test: /(.scss|.css)$/,
                     include: [
                         /paragon/,
-                        /font-awesome/
+                        /font-awesome/,
+                        /redhouse_panel/,
+                        /xviewer/
                     ],
                     use: [
                         'style-loader',

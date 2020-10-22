@@ -1,0 +1,318 @@
+// ----------------------------
+// #TYPOGRAPHY
+// ----------------------------
+$grid-gutter-width:           $baseline;
+$font-serif:                  "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$card-padding:                $baseline*1.5;
+
+body {
+
+    &.admin-panel {
+
+        .window-wrap {
+
+            .content-wrapper {
+                background: $gray-l5;
+            }
+        }
+    }
+}
+
+.panel-dashboard {
+    @import 'bootstrap/scss/mixins';
+    @import 'bootstrap/scss/grid';
+    @import 'bootstrap/scss/tables';
+    @import 'bootstrap/scss/utilities';
+    @import 'redhouse-panel/custom-form';
+
+    .card {
+        margin-bottom: $baseline;
+        padding: $card-padding;
+        line-height: 1.1;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+
+        h2 {
+            font: 22px/1.5 $font-serif;
+            text-transform: uppercase;
+        }
+    }
+
+    .users-box {
+        font-size: 14px;
+
+        .card-title {
+            border-bottom: 2px solid $gray-l5;
+            margin: 0 -30px $baseline;
+            padding: 0 $card-padding;
+        }
+
+        .card-footer {
+            border-top: 2px solid $gray-l5;
+            margin: 0 -30px;
+            padding: $card-padding $card-padding 0;
+            text-align: center;
+        }
+
+        .card-body {
+            height: 250px;
+            overflow-y: auto;
+            margin-bottom: $baseline;
+        }
+
+        td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        .img-col {
+            width: 65px;
+        }
+
+        .btn-col {
+            width: 120px;
+            text-align: center;
+        }
+    }
+
+    .text-link {
+
+        &:hover {
+            color: $primary;
+        }
+    }
+
+    .info-box {
+        display: flex;
+
+        .card {
+            flex-grow: 1;
+        }
+
+        .card-body {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .img-round {
+            border-radius: 50%;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+
+                .title {
+                    display: block;
+                    font-size: 12px;
+                }
+
+                .text {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .row {
+        width: auto;
+    }
+
+    .table {
+        border: 0;
+        color: $black;
+        line-height: 1.5;
+
+        tbody {
+            // border: 2px solid $gray-l7;
+        }
+
+        th,
+        td {
+            border: 0;
+            font-size: 16px;
+        }
+
+        th {
+            font-size: 14px;
+            text-align: center;
+        }
+    }
+
+    .permissions-table {
+        position: relative;
+        overflow-x: auto;
+
+        table {
+            min-width: 600px;
+        }
+
+        th {
+            white-space: nowrap;
+        }
+
+        .checkbox-col {
+            width: 125px;
+        }
+
+        th {
+            text-align: center;
+            font-weight: 400;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        .custom-checkbox {
+            text-align: center;
+        }
+    }
+
+    .btn {
+        font-weight: 400;
+        padding: 4px 10px;
+        line-height: 18px;
+        min-width: 70px;
+        font-size: 12px;
+        text-align: center;
+        border-radius: 0;
+        box-shadow: none;
+        text-shadow: none;
+
+        &-outline {
+
+            &-default {
+                color: $black;
+                border-color: $black;
+                background: none;
+
+                &:focus,
+                &:hover {
+                    color: #fff;
+                    background: $black;
+                    border-color: $black;
+                }
+            }
+
+            &-primary {
+
+                &:focus,
+                &:hover {
+                    background: $primary !important;
+                }
+            }
+        }
+
+        &-lg {
+            font-weight: bold;
+            font-size: 14px;
+            padding: $baseline*.6 $baseline;
+            border-width: 2px;
+        }
+    }
+
+    .settings-box {
+
+        .card {
+            flex-grow: 1;
+        }
+
+        .btn {
+            min-width: 190px;
+        }
+    }
+}
+
+.dashboard-nav {
+
+    ul {
+        margin: 0;
+        padding: 0;
+        letter-spacing: normal;
+        font-size: 14px;
+
+        li {
+            display: inline-block;
+            vertical-align: top;
+            white-space: nowrap;
+            margin: 0 15px 0 0;
+        }
+
+        .icon-box {
+            display: inline-block;
+            vertical-align: middle;
+            height: 23px;
+            width: 23px;
+            background: $black;
+            margin-right: $baseline*.5;
+            padding-top: 3px;
+            text-align: center;
+
+            img {
+                vertical-align: top;
+            }
+        }
+
+        a {
+            border-bottom: 2px solid transparent;
+            font-weight: 700;
+            display: block;
+            color: $black !important;
+            padding: 0 $baseline*.6 $baseline*.9;
+            text-transform: uppercase;
+
+            &:hover {
+                color: $primary !important;
+                text-decoration: none;
+            }
+
+            &:focus {
+                text-decoration: none;
+            }
+
+            &.active {
+                border-bottom-color: $primary;
+                color: $primary !important;
+
+                .icon-box {
+                    background: $primary;
+                }
+            }
+        }
+    }
+}
+
+.stats-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+
+    li {
+        display: inline-block;
+        vertical-align: top;
+        min-width: 225px;
+
+        .number {
+            font-size: 36px;
+            display: block;
+        }
+
+        .text {
+            font-size: 14px;
+            color: #8A8A8A;
+            text-transform: uppercase;
+        }
+    }
+}

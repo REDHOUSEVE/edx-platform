@@ -342,6 +342,15 @@ class UserAdmin(BaseUserAdmin):
             return django_readonly + ('username',)
         return django_readonly
 
+    def has_permission(self, request, method):
+        if is_limited_access_admin_user(request.user):
+            return False
+
+        return getattr(super(UserAdmin, self), method)(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_permission(request, 'has_delete_permission')
+
 
 @admin.register(UserAttribute)
 class UserAttributeAdmin(admin.ModelAdmin):

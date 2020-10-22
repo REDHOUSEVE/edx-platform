@@ -4,6 +4,7 @@ Implement CourseTab
 import logging
 from abc import ABCMeta
 
+from django.conf import settings
 from django.core.files.storage import get_storage_class
 from six import text_type
 from xblock.fields import List
@@ -401,6 +402,11 @@ class CourseTabList(List):
             CourseTab.load('wiki'),
             CourseTab.load('progress'),
         ])
+
+        # If the feature is enabled, add xviewertab in every course
+        # by default.
+        if settings.FEATURES.get('ENABLE_XVIEWER_TAB'):
+            course.tabs.append(CourseTab.load('xviewer'))
 
     @staticmethod
     def get_discussion(course):
