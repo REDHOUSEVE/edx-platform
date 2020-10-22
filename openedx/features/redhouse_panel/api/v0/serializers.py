@@ -11,6 +11,7 @@ from openedx.features.redhouse_panel.utils import (
     has_course_creator_permissions,
     set_panel_access
 )
+from openedx.features.redhouse_panel.helpers import send_password_set_email_for_user
 from student.models import UserProfile
 
 User = get_user_model()
@@ -66,8 +67,7 @@ class UserAccountSerializer(serializers.ModelSerializer):
             # but it is not clear for now. If requirements get change in the future, we need to add some code here.
             set_global_course_creator_status(request, user, is_instructor)
 
-        #TODO
-        # send_password_set_email_to_user()
+        send_password_set_email_for_user(user, request)
         return user
 
     def update(self, user, validated_data):
