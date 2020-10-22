@@ -14,16 +14,9 @@
                 <br />
             </p>
 
-            {% if failed %}
-                <p style="color: rgba(0,0,0,.75);">
-                    {% trans "If you don't want to join, you can ignore this email." %}
-                    <br />
-                </p>
-            {% else %}
-                {% trans "Set Password" as course_cta_text %}
+            {% trans "Set Password" as course_cta_text %}
 
-                {% include "ace_common/edx_ace/common/return_to_course_cta.html" with course_cta_text=course_cta_text course_cta_url=reset_link %}
-            {% endif %}
+            {% include "ace_common/edx_ace/common/return_to_course_cta.html" with course_cta_text=course_cta_text course_cta_url=reset_link %}
         </td>
     </tr>
 </table>
