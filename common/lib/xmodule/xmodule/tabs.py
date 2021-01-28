@@ -9,6 +9,7 @@ from django.core.files.storage import get_storage_class
 from six import text_type
 from xblock.fields import List
 
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.core.lib.plugins import PluginError
 
 log = logging.getLogger("edx.courseware")
@@ -410,7 +411,7 @@ class CourseTabList(List):
 
         # If the feature is enabled, add tournaments tab in every course
         # by default.
-        if settings.FEATURES.get('ENABLE_TOURNAMENTS_TAB'):
+        if configuration_helpers.get_value("ENABLE_TOURNAMENTS_TAB", False):
             course.tabs.append(CourseTab.load('tournaments'))
 
     @staticmethod
