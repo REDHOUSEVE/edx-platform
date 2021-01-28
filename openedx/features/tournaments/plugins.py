@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_noop
 
 from xmodule.tabs import TabFragmentViewMixin
 from courseware.tabs import EnrolledTab
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
 
 class TournamentsTab(TabFragmentViewMixin, EnrolledTab):
@@ -20,7 +21,7 @@ class TournamentsTab(TabFragmentViewMixin, EnrolledTab):
         Returns true if this tab is enabled.
         """
         is_enabled = super(TournamentsTab, cls).is_enabled(course, user)
-        return settings.FEATURES.get('ENABLE_TOURNAMENTS_TAB', False) and is_enabled
+        return configuration_helpers.get_value("ENABLE_TOURNAMENTS_TAB", False) and is_enabled
 
     @property
     def uses_bootstrap(self):
