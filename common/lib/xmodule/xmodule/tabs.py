@@ -408,6 +408,11 @@ class CourseTabList(List):
         if settings.FEATURES.get('ENABLE_XVIEWER_TAB'):
             course.tabs.append(CourseTab.load('xviewer'))
 
+        # If the feature is enabled, add tournaments tab in every course
+        # by default.
+        if settings.FEATURES.get('ENABLE_TOURNAMENTS_TAB'):
+            course.tabs.append(CourseTab.load('tournaments'))
+
     @staticmethod
     def get_discussion(course):
         """
